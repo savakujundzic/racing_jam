@@ -1,11 +1,12 @@
 [gd_scene load_steps=4 format=3 uid="uid://evxy4mdc4h3u"]
 
-[ext_resource type="Texture2D" uid="uid://dupaa5y8xr6ad" path="res://icon.svg" id="2_7yw6m"]
+[ext_resource type="Texture2D" uid="uid://c36ryekaakfw2" path="res://assets/motorcycle.png" id="1_hy263"]
 
 [sub_resource type="GDScript" id="GDScript_cr08p"]
 script/source = "extends CharacterBody2D
 
 @export var max_speed = 2000
+@export var reverse_speed = 1000
 @export var acceleration = 100
 @export var deceleration = 140
 @export var rotation_speed = 180  # Degrees per second
@@ -19,7 +20,6 @@ func _physics_process(delta):
 
 	# Calculate target velocity
 	var target_velocity = movement_direction * input_direction * max_speed
-
 	velocity = velocity.lerp(target_velocity, acceleration * delta)
 
 	# Deceleration when no input
@@ -34,16 +34,19 @@ func _physics_process(delta):
 "
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_g74bs"]
-size = Vector2(120, 120)
+size = Vector2(120, 215)
 
 [node name="Player" type="CharacterBody2D"]
 script = SubResource("GDScript_cr08p")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 47.5)
 shape = SubResource("RectangleShape2D_g74bs")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-texture = ExtResource("2_7yw6m")
+position = Vector2(-0.5, 47.5)
+scale = Vector2(0.159631, 0.129663)
+texture = ExtResource("1_hy263")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(0.4, 0.4)
