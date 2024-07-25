@@ -1,0 +1,49 @@
+[gd_scene load_steps=4 format=3 uid="uid://evxy4mdc4h3u"]
+
+[ext_resource type="Texture2D" uid="uid://dupaa5y8xr6ad" path="res://icon.svg" id="2_7yw6m"]
+
+[sub_resource type="GDScript" id="GDScript_cr08p"]
+script/source = "extends CharacterBody2D
+
+@export var max_speed = 1000
+@export var acceleration = 100
+@export var deceleration = 100
+@export var rotation_speed = 180  # Degrees per second
+
+func _physics_process(delta):
+	# Get vertical input
+	var input_direction = Input.get_axis(\"ui_down\", \"ui_up\")
+
+	# Calculate movement direction based on rotation
+	var movement_direction = Vector2(0, -1).rotated(rotation_degrees * PI / 180)
+
+	# Calculate target velocity
+	var target_velocity = movement_direction * input_direction * max_speed
+
+	velocity = velocity.lerp(target_velocity, acceleration * delta)
+
+	# Deceleration when no input
+	if input_direction == 0:
+		velocity *= (1 - deceleration * delta)
+
+	# Rotation based on input
+	var rotation_amount = Input.get_axis(\"ui_left\", \"ui_right\") * rotation_speed * delta
+	rotation_degrees += rotation_amount
+
+	move_and_slide()
+"
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g74bs"]
+size = Vector2(120, 120)
+
+[node name="Player" type="CharacterBody2D"]
+script = SubResource("GDScript_cr08p")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_g74bs")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_7yw6m")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+zoom = Vector2(0.4, 0.4)
