@@ -5,9 +5,9 @@
 [sub_resource type="GDScript" id="GDScript_cr08p"]
 script/source = "extends CharacterBody2D
 
-@export var max_speed = 1000
+@export var max_speed = 2000
 @export var acceleration = 100
-@export var deceleration = 100
+@export var deceleration = 140
 @export var rotation_speed = 180  # Degrees per second
 
 func _physics_process(delta):
