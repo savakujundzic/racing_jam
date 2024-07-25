@@ -6,30 +6,25 @@
 script/source = "extends CharacterBody2D
 
 @export var max_speed = 2000
-@export var reverse_speed = 1000
-@export var acceleration = 100
+@export var acceleration = 60
 @export var deceleration = 140
 @export var rotation_speed = 180  # Degrees per second
 
 func _physics_process(delta):
 	# Get vertical input
-	var input_direction = Input.get_axis(\"ui_down\", \"ui_up\")
-
+	var input_direction = Input.get_axis(\"move_down\", \"move_up\")
 	# Calculate movement direction based on rotation
 	var movement_direction = Vector2(0, -1).rotated(rotation_degrees * PI / 180)
-
 	# Calculate target velocity
 	var target_velocity = movement_direction * input_direction * max_speed
 	velocity = velocity.lerp(target_velocity, acceleration * delta)
-
 	# Deceleration when no input
 	if input_direction == 0:
 		velocity *= (1 - deceleration * delta)
-
+	
 	# Rotation based on input
-	var rotation_amount = Input.get_axis(\"ui_left\", \"ui_right\") * rotation_speed * delta
+	var rotation_amount = Input.get_axis(\"move_left\", \"move_right\") * rotation_speed * delta
 	rotation_degrees += rotation_amount
-
 	move_and_slide()
 "
 
@@ -37,6 +32,7 @@ func _physics_process(delta):
 size = Vector2(120, 215)
 
 [node name="Player" type="CharacterBody2D"]
+rotation = 1.5708
 script = SubResource("GDScript_cr08p")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -49,4 +45,5 @@ scale = Vector2(0.159631, 0.129663)
 texture = ExtResource("1_hy263")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+rotation = 1.5708
 zoom = Vector2(0.4, 0.4)
